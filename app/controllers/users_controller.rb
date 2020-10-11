@@ -1,6 +1,13 @@
 class UsersController < ApplicationController
-  before_action :only_loggedin_users, only: [:edit, :update]
+  before_action :only_loggedin_users, only: [:index,:edit, :update]
   before_action :correct_user, only: [:edit, :update]
+
+  def index
+    # @users = User.all
+    #variable = Model.paginate[page: params[current_page]] 
+    # @users = User.paginate(page: params[:page], per page: 10)
+    @users = User.paginate(page: params[:page], per_page: 10 )
+  end
 
   def new
     @user = User.new
@@ -31,6 +38,11 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
+  end
+
+  def destroy
+    User.find(params[:id]).destroy
+    redirect_to users_url
   end
 
   private
